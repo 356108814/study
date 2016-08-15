@@ -1,0 +1,1 @@
+{"nickname":"name1", "nickname":"name2"}
