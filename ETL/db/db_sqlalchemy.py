@@ -16,11 +16,15 @@ import settings
 class ModelMeta(DeclarativeMeta):
     def __new__(cls, name, bases, d):
         column_name_sets = set()
-        for k, v in d.items():
-            if getattr(v, '__class__', None) is None:
-                continue
-            if v.__class__.__name__ == 'Column':
-                column_name_sets.add(k)
+        if 'column_name_sets' in d:
+            for name in d['column_name_sets']:
+                column_name_sets.add(name)
+        else:
+            for k, v in d.items():
+                if getattr(v, '__class__', None) is None:
+                    continue
+                if v.__class__.__name__ == 'Column':
+                    column_name_sets.add(k)
 
         # obj = type.__new__(cls, name, bases, dict(namespace))
         instance = super(ModelMeta, cls).__new__(cls, name, bases, dict(d))
@@ -35,6 +39,8 @@ class BaseModel(__Base):
 
     # 基类的 _column_name_sets  是为实现的类型
     _column_name_sets = NotImplemented
+
+    _mapper = {}
 
     def to_dict(self):
         return dict(
@@ -67,6 +73,34 @@ class BaseModel(__Base):
     @classmethod
     def execute_update(cls, sql, param_dict):
         return SQLAlchemy.instance().execute_update(sql, param_dict)
+
+    @classmethod
+    def get_table_name(cls, column_value):
+        return cls.__tablename__
+
+    @classmethod
+    def gen_model(cls, column_value_dict=None):
+        table_name = cls.get_table_name(column_value_dict)
+        spa = table_name.split('_')
+        index = spa[len(spa) - 1]
+        class_name = cls.__name__ + index
+        model_dict = {
+            '__module__': __name__,
+            '__name__': class_name,
+            '__tablename__': table_name,
+            'column_name_sets': cls._column_name_sets    # 传入列名，否则Model的to_dict因找不到列名而找不到对应属性
+        }
+
+        model_class = BaseModel._mapper.get(class_name, None)
+        if model_class is None:
+            model_class = type(class_name, (BaseModel,), model_dict)
+            BaseModel._mapper[class_name] = model_class
+
+        model = model_class()
+        if column_value_dict:    # 列值，新增时用到
+            for k, v in column_value_dict.items():
+                setattr(model, k, v)
+        return model
 
     def __str__(self):
         return str(self.to_dict())

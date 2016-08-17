@@ -7,7 +7,6 @@ ETL服务入口
 import configparser
 
 import settings
-from model.user_action import UserAction
 
 
 def load_conf():
@@ -27,7 +26,15 @@ if __name__ == '__main__':
     load_conf()
     # TODO 注册服务
     print('ETL service started!')
-
-    user_action = UserAction.model(1)
-    actions = user_action.Q.first()
+    from model.user_action import UserAction
+    d = {
+        'uid': 2,
+        'p_type': '0',
+        't_type': '1',
+        'a_type': '4',
+        'aimei_object': '1001',
+    }
+    user_action = UserAction.gen_model(d)
+    user_action.session.add(user_action)
+    actions = user_action.Q.all()
     print(actions)
