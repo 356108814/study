@@ -2,7 +2,7 @@
 
 import re
 from kafka import SimpleClient,SimpleConsumer,KafkaConsumer
-
+from pykafka import KafkaClient
 
 def testpythonkafka():
     """
@@ -32,22 +32,17 @@ def testpythonkafka():
 
 
 def testpykafka():
-    """
-    pykafka
-    :return:
-    """
-    from pykafka import KafkaClient
 
-    client = KafkaClient(hosts="172.16.2.102:9092")
+    client = KafkaClient(hosts="172.16.3.216:9092")
     topic_list = client.topics
-    print client.topics
-    topic = topic_list['aimeipay']
-    print topic
+    print(client.topics)
+    topic = topic_list['minik_weixin_user_action'.encode()]
+    print(topic)
     # 持续监听消费。不维护offset，消费完以后，不会再监听到。只会监听到新的消息
-    consumer = topic.get_simple_consumer('python-consumer-group')
+    consumer = topic.get_simple_consumer('python-etl-group'.encode())
     for message in consumer:
         if message is not None:
-            print message.offset, message.value
+            print(message.offset, message.value)
 
 
 if __name__ == '__main__':

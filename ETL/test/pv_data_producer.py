@@ -24,7 +24,7 @@ def produce_file_minute():
 def product_pvs():
     num = random.randint(10, 100)
     pvs = ''
-    for x in xrange(num):
+    for x in range(num):
         pvs += produce_pv()
         time.sleep(0.1)
     return pvs

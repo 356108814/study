@@ -1,27 +1,17 @@
 # encoding: utf-8
+import re
 
-from base import Parser
 
+class ParserUtil(object):
 
-class SplitParser(Parser):
-    """
-    分割解析器
-    """
-    def __init__(self):
-        super(SplitParser, self).__init__()
-
-    def split(self, data, sep='|'):
-        """
-        分割
-        :param data:
-        :param sep:
-        :return: list
-        """
-        if data is not None and data != '':
+    @staticmethod
+    def split(data, sep='|'):
+        if data:
             return data.split(sep)
         return []
 
-    def split_k_v(self, data, sep='&', kv_sep='='):
+    @staticmethod
+    def split_k_v(data, sep='&', kv_sep='='):
         """
         分割键值对
         :param data:
@@ -30,7 +20,7 @@ class SplitParser(Parser):
         :return: dict
         """
         result_dict = {}
-        if data is not None and data != '':
+        if data:
             array = data.split(sep)
             for _, kv in enumerate(array):
                 if kv != '':
@@ -43,10 +33,24 @@ class SplitParser(Parser):
                     result_dict[k] = v
         return result_dict
 
+    @staticmethod
+    def re_group(data, regex):
+        """
+        正则分组提取
+        :param data:
+        :param regex: 如："(?P<user_agent>.*)" (?P<request_time>.*)ms'
+        :return: dict
+        """
+        reg = re.compile(regex)
+        match = reg.match(data)
+        if not match:
+            # TODO log
+            print(data)
+        return match.groupdict()
+
 
 if __name__ == '__main__':
     s = 'aimei_rsp_time=&a=1'
-    parser = SplitParser()
-    # print parser.split_k_v(s)
-    a,b,c = ['a', 'b', 'c']
-    print b
+    parser = ParserUtil()
+    a, b, c = ['a', 'b', 'c']
+    print(b)
