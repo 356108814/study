@@ -7,7 +7,7 @@
 import time
 from consumer.base import Consumer
 from db.db_sqlalchemy import SQLAlchemy
-from parser.util import ParserUtil
+from util.parser import ParserUtil
 from log import logger
 
 
@@ -16,7 +16,7 @@ class BaseService(Consumer):
         if not group_id:
             group_id = 'python-etl-group'
         if not bootstrap_servers:
-            bootstrap_servers = ['172.16.3.216:9092']
+            bootstrap_servers = ['172.16.3.222:9092']
         super().__init__(topics, group_id, bootstrap_servers)
 
         self.parser = ParserUtil
@@ -24,7 +24,7 @@ class BaseService(Consumer):
         self.log = logger
 
         self._start_time = 0
-        self._check_time = 60
+        self._check_time = 60    # 秒
         self._tmp_lines = []
         self._lines_len = 1    # 一次处理行数
 

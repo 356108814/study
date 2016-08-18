@@ -28,6 +28,13 @@ class ParserUtil(object):
                     k = kv_array[0]
                     if len(kv_array) == 2:
                         v = kv_array[1]
+                        if v.isdigit():
+                            v = int(v)
+                        else:
+                            try:
+                                v = float(v)
+                            except ValueError:
+                                pass
                     else:
                         v = ''
                     result_dict[k] = v

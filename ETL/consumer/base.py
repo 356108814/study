@@ -44,5 +44,5 @@ class Consumer(object):
 
 
 if __name__ == '__main__':
-    consumer = Consumer('minik_weixin_user_action', 'python-etl-group', ['172.16.3.216:9092'])
+    consumer = Consumer('minik_weixin_user_action', 'python-etl-group', ['172.16.3.222:9092'])
     consumer.handle()
