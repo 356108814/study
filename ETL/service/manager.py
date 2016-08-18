@@ -55,6 +55,7 @@ class ServiceManager(object):
             service_instance.stop()
             del self._running_services[service.path]
             logger.info('服务取消注册成功：%s' % str(service))
+            service = None
 
     def check(self):
         """
@@ -75,11 +76,10 @@ class ServiceManager(object):
             uuid = service.path    # 服务器唯一标识
             if uuid in self._running_services:
                 running_service = self._running_services[uuid]
-
                 if service != running_service:    # 服务已改变
                     self.unregister(running_service)
-                if service.is_start:
-                    self.register(service)
+                    if service.is_start:
+                        self.register(service)
             else:    # 新增服务
                 if service.is_start:
                     self.register(service)

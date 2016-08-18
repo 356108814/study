@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import threading
 from kafka import KafkaConsumer
 
 
@@ -20,27 +21,37 @@ class Consumer(object):
         # enable_auto_commit=False，默认为True，自动保存offset
         self.kafka_consumer = KafkaConsumer(topics, group_id=group_id, bootstrap_servers=bootstrap_servers,
                                             auto_offset_reset='earliest', enable_auto_commit=False)
+        self._handle_thread = None
+
+    def handle_thread(self):
+        try:
+            for message in self.kafka_consumer:
+                # message value and key are raw bytes -- decode if necessary!
+                # e.g., for unicode: `message.value.decode('utf-8')`
+                topic = message.topic
+                partition = message.partition
+                offset = message.offset
+                key = message.value.decode('utf-8')
+                value = message.value.decode('utf-8')
+                # print("%s:%d:%d: key=%s value=%s" % (topic, partition, offset, key, value))
+                if value:
+                    self.consume(value)
+        except Exception as e:
+            pass
 
     def handle(self):
         topics = self.kafka_consumer.topics()
         print('topics:%s' % topics)
-        for message in self.kafka_consumer:
-            # message value and key are raw bytes -- decode if necessary!
-            # e.g., for unicode: `message.value.decode('utf-8')`
-            topic = message.topic
-            partition = message.partition
-            offset = message.offset
-            key = message.value.decode('utf-8')
-            value = message.value.decode('utf-8')
-            # print("%s:%d:%d: key=%s value=%s" % (topic, partition, offset, key, value))
-            if value:
-                self.consume(value)
+        self._handle_thread = threading.Thread(target=self.handle_thread)    # 必须放在子线程中，不然阻塞server主循环
+        self._handle_thread.start()
 
     def consume(self, line_data):
         print("value:%s" % line_data)
 
     def close(self):
         self.kafka_consumer.close()
+        self.kafka_consumer = None
+        self._handle_thread = None
 
 
 if __name__ == '__main__':

@@ -36,9 +36,6 @@ class Server(object):
         self._serviceManager = ServiceManager.instance()
         logger.info(u'服务启动完成，进入主循环')
 
-        check_thread = threading.Thread(target=self.check)
-        check_thread.start()
-
         # 主循环
         conf_flag = 0
         while True:
