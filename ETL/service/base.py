@@ -16,7 +16,7 @@ class BaseService(Consumer):
         if not group_id:
             group_id = 'python-etl-group'
         if not bootstrap_servers:
-            bootstrap_servers = ['172.16.3.222:9092']
+            bootstrap_servers = ['192.168.1.102:9092']
         super().__init__(topics, group_id, bootstrap_servers)
 
         self.parser = ParserUtil
@@ -34,6 +34,9 @@ class BaseService(Consumer):
         :param line_data:
         :return:
         """
+        if self.is_need_drop(line_data):
+            return
+        line_data = self.get_clean_data(line_data)
         self._start_time = time.time()
         if len(self._tmp_lines) < self._lines_len:
             self._tmp_lines.append(line_data)
@@ -41,6 +44,22 @@ class BaseService(Consumer):
         if len(self._tmp_lines) >= self._lines_len:
             self.process(self._tmp_lines)
             self._tmp_lines = []
+
+    def is_need_drop(self, line_data):
+        """
+        是否需要丢弃该行数据
+        :param line_data:
+        :return:
+        """
+        return False
+
+    def get_clean_data(self, line_data):
+        """
+        获取清洗过的行数据。清洗过程：转换、补全数据
+        :param line_data:
+        :return:
+        """
+        return line_data
 
     def check_process(self):
         """

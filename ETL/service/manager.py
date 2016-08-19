@@ -71,8 +71,16 @@ class ServiceManager(object):
                 logger.warning('服务配置错误：%s' % str(service))
                 continue
             service.path = va[0]
-            service.version = int(va[1])
-            service.is_start = int(va[2])
+            if va[1].isdigit():
+                service.version = int(va[1])
+            else:
+                logger.warning('服务版本号配置错误，期望是数字，而配置的是：%s' % va[1])
+                continue
+            if va[2] in ['0', '1']:
+                service.is_start = int(va[2])
+            else:
+                logger.warning('服务是否启动配置错误，只能为0或1')
+                continue
             uuid = service.path    # 服务器唯一标识
             if uuid in self._running_services:
                 running_service = self._running_services[uuid]
@@ -95,7 +103,7 @@ class ServiceManager(object):
         try:
             return getattr(obj, parts[-1])
         except AttributeError:
-            logger.error("No module named %s" % parts[-1])
+            logger.error("服务类不存在：%s" % name)
             return None
 
 
