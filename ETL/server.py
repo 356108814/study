@@ -34,7 +34,8 @@ class Server(object):
         self.load_conf()
         logger.info(u'服务初始化')
         self._serviceManager = ServiceManager.instance()
-        logger.info(u'服务启动完成，进入主循环')
+        self._serviceManager.check()
+        logger.info(u'服务启动完成')
 
         # 主循环
         conf_flag = 0
@@ -50,23 +51,6 @@ class Server(object):
             self._serviceManager.check_all_process()
 
 
-
-
-
 if __name__ == '__main__':
     server = Server()
     server.start()
-
-
-    # from model.user_action import UserAction
-    # d = {
-    #     'uid': 2,
-    #     'p_type': '0',
-    #     't_type': '1',
-    #     'a_type': '4',
-    #     'aimei_object': '1001',
-    # }
-    # user_action = UserAction.gen_model(d)
-    # user_action.session.add(user_action)
-    # actions = user_action.Q.all()
-    # print(actions)

@@ -7,20 +7,24 @@
 import time
 from consumer.base import Consumer
 from db.db_sqlalchemy import SQLAlchemy
+from db.db_mysql import DBMySQL
 from util.parser import ParserUtil
 from log import logger
+import settings
 
 
 class BaseService(Consumer):
     def __init__(self, topics, group_id=None, bootstrap_servers=None):
+        kafka = settings.CONF['kafka']
         if not group_id:
-            group_id = 'python-etl-group'
+            group_id = kafka['group_id']
         if not bootstrap_servers:
-            bootstrap_servers = ['192.168.1.102:9092']
+            bootstrap_servers = ['%s:%s' % (kafka['host'], kafka['port'])]
         super().__init__(topics, group_id, bootstrap_servers)
 
         self.parser = ParserUtil
-        self.db = SQLAlchemy.instance()
+        db_conf = settings.CONF['db']
+        self.db = DBMySQL(db_conf['host'], db_conf['port'], db_conf['user'], db_conf['password'], db_conf['db'])    # SQLAlchemy.instance()
         self.log = logger
 
         self._start_time = 0
