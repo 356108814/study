@@ -10,5 +10,10 @@ import scrapy
 
 class JobspiderItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field()    # 职位名称
+    company = scrapy.Field()
+    location = scrapy.Field()    # 地点
+    salary = scrapy.Field()
+    description = scrapy.Field()
+    requirement = scrapy.Field()    # 职位要求
+
