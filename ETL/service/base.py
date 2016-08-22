@@ -30,7 +30,7 @@ class BaseService(Consumer):
         self._start_time = 0
         self._check_time = 60    # 秒
         self._tmp_lines = []
-        self._lines_len = 1    # 一次处理行数
+        self._lines_len = 100    # 一次处理行数
 
     def consume(self, line_data):
         """
@@ -69,7 +69,7 @@ class BaseService(Consumer):
         """
         自动按时间窗口检测处理。解决当数据不足指定行数时不处理的问题
         """
-        if time.time() - self._start_time > self._check_time:
+        if time.time() - self._start_time > self._check_time and self._tmp_lines:
             self.process(self._tmp_lines)
             self._tmp_lines = []
 

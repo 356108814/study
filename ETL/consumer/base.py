@@ -1,7 +1,10 @@
 # encoding: utf-8
 
 import threading
+from multiprocessing import Process
 from kafka import KafkaConsumer
+from log import logger
+import settings
 
 
 class Consumer(object):
@@ -19,8 +22,14 @@ class Consumer(object):
         """
         # auto_offset_reset='earliest'
         # enable_auto_commit=False，默认为True，自动保存offset
+        if settings.DEBUG:
+            auto_offset_reset = 'earliest'
+            enable_auto_commit = False
+        else:
+            auto_offset_reset = 'latest'
+            enable_auto_commit = True
         self.kafka_consumer = KafkaConsumer(topics, group_id=group_id, bootstrap_servers=bootstrap_servers,
-                                            auto_offset_reset='earliest', enable_auto_commit=False)
+                                            auto_offset_reset=auto_offset_reset, enable_auto_commit=enable_auto_commit)
         self._handle_thread = None
 
     def handle_thread(self):
@@ -37,7 +46,9 @@ class Consumer(object):
                 if value:
                     self.consume(value)
         except Exception as e:
-            pass
+            if settings.DEBUG:
+                raise e
+            logger.error('Consumer.handle_thread:%s' % str(e))
 
     def handle(self):
         topics = self.kafka_consumer.topics()
