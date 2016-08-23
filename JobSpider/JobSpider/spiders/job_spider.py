@@ -24,11 +24,13 @@ class LagouJobSpider(scrapy.Spider):
 
         item = JobspiderItem()
         job_detail = response.xpath('//dl[@class="job_detail"]')[0]
-        title = job_detail.xpath('./dt/h1')[0].get('title', '')    # get获取属性
+        print('='*100)
+        title = job_detail.xpath('./dt/h1')[0].xpath('@title').extract_first()   # get获取属性
+        print('title:%s' % title)
         job_request = response.xpath('//dd[@class="job_request"]')[0]
         spans = job_request.xpath('./p')[0].xpath('./span')    # ./表示从当前节点开始查找
-        salary = spans[0].text
-        location = spans[1].text
+        salary = spans[0].xpath('./text()').extract_first()
+        location = spans[1].xpath('./text()').extract_first()
 
         job_bt = response.xpath('//dd[@class="job_bt"]')[0]
         descs = []
@@ -37,7 +39,7 @@ class LagouJobSpider(scrapy.Spider):
         is_desc = True
         requirements = []
         for d in description:
-            text = d.text
+            text = d.xpath('./text()').extract_first()
             if text:
                 if is_desc:
                     descs.append(text)
