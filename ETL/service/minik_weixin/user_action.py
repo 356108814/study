@@ -9,7 +9,7 @@ from ..base import BaseService
 from ..enums import Product
 from ..enums import Terminal
 from ..enums import Action
-from model.user_action import UserAction
+# from model.user_action import UserAction
 from util.date import DateUtil
 
 
@@ -77,6 +77,7 @@ class UserActionService(BaseService):
         sql = "INSERT INTO t_data_aimei_user_action_%(month)s (uid, p_type, t_type, a_type, action_time, location, aimei_object, update_time) VALUES (%(uid)s, '%(p_type)s', '%(t_type)s', '%(a_type)s', %(action_time)s, %(location)s, '%(aimei_object)s', '%(update_time)s')"
         sql %= column_value    # 格式化
         self.db.execute(sql)
+        return sql
 
     def insert_or_update_total(self, column_value, data=None):
         """
@@ -94,6 +95,7 @@ class UserActionService(BaseService):
         sql = "INSERT INTO t_data_aimei_user_action_mob_%(month)s (p_type, a_type, provinceid, isp, time_span, aimei_object, count, update_time) VALUES ('%(p_type)s', '%(a_type)s', %(provinceid)s, %(isp)s, %(time_span)s, '%(aimei_object)s', %(count)s, '%(update_time)s') ON DUPLICATE KEY UPDATE count = count + 1, update_time = '%(update_time)s'"
         sql %= column_value    # 格式化
         self.db.execute(sql)
+        return sql
 
     def get_time_span(self, date_str):
         # 2016-08-15_23:59:59

@@ -2,6 +2,7 @@
 
 import pymysql
 from log import logger
+import time
 
 
 class DBMySQL(object):
@@ -19,6 +20,7 @@ class DBMySQL(object):
         self._db = db
 
         self._connection = self.create_connection()
+        self._connection.autocommit(False)
 
     def create_connection(self):
         connection = pymysql.connect(host=self._host,
@@ -74,6 +76,41 @@ class DBMySQL(object):
                 cursor.execute(sql)
             except Exception as e:
                 logger.error('DBMySQL.execute.sql:%s,Error:%s' % (sql, str(e)))
+        self.connection.commit()
+
+    def execute_sqls(self, sqls):
+        """
+        执行多条sql语句
+        @param sqls:
+        @return:
+        """
+        start = time.time()
+        with self.connection.cursor() as cursor:
+            for sql in sqls:
+                try:
+                    cursor.execute(sql)
+                except Exception as e:
+                    logger.error('DBMySQL.execute.sql:%s,Error:%s' % (sql, str(e)))
+        self.connection.commit()
+        print('execute_sqls:%s' % (time.time() - start))
+
+    def executemany(self, sql, values=None):
+        """
+        根据值数组执行sql语句
+        @param sql:
+        @param values: 每条记录值dict
+        @return:
+        """
+        with self.connection.cursor() as cursor:
+            for params_dict in values:
+                # sql格式化
+                if params_dict:
+                    for (key, value) in params_dict.items():
+                        sql = sql.replace('{%s}' % key, value)
+                try:
+                    cursor.execute(sql)
+                except Exception as e:
+                    logger.error('DBMySQL.execute.sql:%s,Error:%s' % (sql, str(e)))
         self.connection.commit()
 
     def close(self):
