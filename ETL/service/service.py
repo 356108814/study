@@ -12,6 +12,8 @@ class Service(object):
         self.path = ''
         self.version = 1
         self.is_start = 0
+        self.is_from_dir = 1    # 数据来源是否为文件夹
+        self.dir_path = ''      # 数据来源文件夹路径
         self.instance = None    # 服务实例
 
     def __eq__(self, obj):

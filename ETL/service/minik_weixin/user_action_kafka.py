@@ -4,20 +4,20 @@
 @author Yuriseus
 @create 2016-8-17 15:14
 """
-from util.date import DateUtil
-from ..base_file import BaseFileService
-from ..enums import Action
+import time
+from ..base_kafka import BaseKafkaService
 from ..enums import Product
 from ..enums import Terminal
-import settings
+from ..enums import Action
+# from model.user_action import UserAction
+from util.date import DateUtil
 
 
-class UserActionService(BaseFileService):
+class UserActionService(BaseKafkaService):
 
-    def __init__(self, dir_path):
-        # if not dir_path:
-        #     class_path = __name__ + '.' + self.__class__.__name__
-        super().__init__(dir_path)
+    def __init__(self):
+        self.topics = 'minik_weixin_user_action'
+        super().__init__(self.topics)
 
     def is_need_drop(self, line_data):
         if line_data.find('uid') == -1:

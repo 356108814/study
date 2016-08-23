@@ -1,70 +1,57 @@
 # encoding: utf-8
 
-import threading
-from multiprocessing import Process
-from kafka import KafkaConsumer
-from log import logger
-import settings
+from enum import Enum
 
 
-class Consumer(object):
+class State(Enum):
+    STARTED = 0
+    PAUSED = 1
+    STOPPED = 2
+
+
+class BaseConsumer(object):
     """
-    消费者基类，只针对kafka
+    消费者基类
     """
 
-    def __init__(self, topics, group_id, bootstrap_servers):
-        """
-        初始化。默认消费最近的数据，offset自动提交
-        :param topics: 消息类别
-        :param group_id: 消费组
-        :param bootstrap_servers: 服务器列表
-        :return:
-        """
-        # auto_offset_reset='earliest'
-        # enable_auto_commit=False，默认为True，自动保存offset
-        if settings.DEBUG:
-            auto_offset_reset = 'earliest'
-            enable_auto_commit = False
-        else:
-            auto_offset_reset = 'latest'
-            enable_auto_commit = True
-        self.kafka_consumer = KafkaConsumer(topics, group_id=group_id, bootstrap_servers=bootstrap_servers,
-                                            auto_offset_reset=auto_offset_reset, enable_auto_commit=enable_auto_commit)
-        self._handle_thread = None
+    def __init__(self):
+        self._state = State.STOPPED
 
-    def handle_thread(self):
-        try:
-            for message in self.kafka_consumer:
-                # message value and key are raw bytes -- decode if necessary!
-                # e.g., for unicode: `message.value.decode('utf-8')`
-                topic = message.topic
-                partition = message.partition
-                offset = message.offset
-                key = message.value.decode('utf-8')
-                value = message.value.decode('utf-8')
-                # print("%s:%d:%d: key=%s value=%s" % (topic, partition, offset, key, value))
-                if value:
-                    self.consume(value)
-        except Exception as e:
-            if settings.DEBUG:
-                raise e
-            logger.error('Consumer.handle_thread:%s' % str(e))
+    @property
+    def state(self):
+        return self._state
 
-    def handle(self):
-        topics = self.kafka_consumer.topics()
-        print('topics:%s' % topics)
-        self._handle_thread = threading.Thread(target=self.handle_thread)    # 必须放在子线程中，不然阻塞server主循环
-        self._handle_thread.start()
+    def start(self):
+        self.set_state(State.STARTED)
+
+    def pause(self):
+        self.set_state(State.PAUSED)
+
+    def stop(self):
+        self.set_state(State.STOPPED)
+
+    def set_state(self, state):
+        if isinstance(state, State):
+            self._state = state
+            if state == State.STARTED:
+                self.handle_start()
+            elif state == State.PAUSED:
+                self.handle_pause()
+            elif state == State.STOPPED:
+                self.handle_stop()
+
+    def handle_start(self):
+        pass
+
+    def handle_pause(self):
+        pass
+
+    def handle_stop(self):
+        pass
 
     def consume(self, line_data):
-        print("value:%s" % line_data)
-
-    def close(self):
-        self.kafka_consumer.close()
-        self.kafka_consumer = None
-        self._handle_thread = None
+        pass
 
 
 if __name__ == '__main__':
-    consumer = Consumer('minik_weixin_user_action', 'python-etl-group', ['172.16.3.222:9092'])
-    consumer.handle()
+    print(isinstance(1, State))

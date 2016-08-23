@@ -34,7 +34,7 @@ class Server(object):
         self.load_conf()
         logger.info(u'服务初始化')
         self._serviceManager = ServiceManager.instance()
-        self._serviceManager.check()
+        self._serviceManager.check_config()
         logger.info(u'服务启动完成')
 
         # 主循环
@@ -44,11 +44,11 @@ class Server(object):
             conf_flag += 1
             if conf_flag >= self._check_conf_interval:
                 self.load_conf()
-                self._serviceManager.check()
+                self._serviceManager.check_config()
                 conf_flag = 0
 
-            # 每秒检测
-            self._serviceManager.check_all_process()
+            # 每秒定时处理
+            self._serviceManager.process_interval()
 
 
 if __name__ == '__main__':

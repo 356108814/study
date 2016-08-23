@@ -5,26 +5,21 @@
 @create 2016-8-17 15:02
 """
 import time
-from consumer.base import Consumer
-from db.db_sqlalchemy import SQLAlchemy
-from db.db_mysql import DBMySQL
-from util.parser import ParserUtil
-from log import logger
+
 import settings
+from consumer.file import FileConsumer
+from db.db_mysql import DBMySQL
+from log import logger
+from util.parser import ParserUtil
 
 
-class BaseService(Consumer):
-    def __init__(self, topics, group_id=None, bootstrap_servers=None):
-        kafka = settings.CONF['kafka']
-        if not group_id:
-            group_id = kafka['group_id']
-        if not bootstrap_servers:
-            bootstrap_servers = ['%s:%s' % (kafka['host'], kafka['port'])]
-        super().__init__(topics, group_id, bootstrap_servers)
+class BaseFileService(FileConsumer):
+    def __init__(self, dir_path):
+        super().__init__(dir_path)
 
         self.parser = ParserUtil
         db_conf = settings.CONF['db']
-        self.db = DBMySQL(db_conf['host'], db_conf['port'], db_conf['user'], db_conf['password'], db_conf['db'])    # SQLAlchemy.instance()
+        self.db = DBMySQL(db_conf['host'], db_conf['port'], db_conf['user'], db_conf['password'], db_conf['db'])
         self.log = logger
 
         self._start_time = 0
@@ -65,9 +60,9 @@ class BaseService(Consumer):
         """
         return line_data
 
-    def check_process(self):
+    def check_batch_process(self):
         """
-        自动按时间窗口检测处理。解决当数据不足指定行数时不处理的问题
+        自动按时间窗口检测批处理。解决当数据不足指定行数时不处理的问题
         """
         if time.time() - self._start_time > self._check_time and self._tmp_lines:
             self.process(self._tmp_lines)
@@ -80,9 +75,3 @@ class BaseService(Consumer):
         :return:
         """
         raise NotImplementedError('must implement process')
-
-    def start(self):
-        self.handle()
-
-    def stop(self):
-        self.close()
