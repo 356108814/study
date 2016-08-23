@@ -30,7 +30,7 @@ class BaseService(Consumer):
         self._start_time = 0
         self._check_time = 60    # 秒
         self._tmp_lines = []
-        self._lines_len = 100    # 一次处理行数
+        self._lines_len = 10000    # 一次处理行数
 
     def consume(self, line_data):
         """

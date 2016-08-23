@@ -1,6 +1,8 @@
 # coding:utf-8
 
 import pymysql
+
+from common.decorators import fun_cost_time
 from log import logger
 import time
 
@@ -60,6 +62,7 @@ class DBMySQL(object):
                 result = cursor.fetchall()
         return result
 
+    @fun_cost_time
     def execute(self, sql, params_dict=None):
         """
         执行sql语句
