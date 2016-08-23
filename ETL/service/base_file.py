@@ -25,7 +25,7 @@ class BaseFileService(FileConsumer):
         self._start_time = 0
         self._check_time = 60    # 秒
         self._tmp_lines = []
-        self._lines_len = 10000    # 一次处理行数
+        self.batch_lines_count = 10000    # 一次处理行数
 
     def consume(self, line_data):
         """
@@ -37,10 +37,10 @@ class BaseFileService(FileConsumer):
             return
         line_data = self.get_clean_data(line_data)
         self._start_time = time.time()
-        if len(self._tmp_lines) < self._lines_len:
+        if len(self._tmp_lines) < self.batch_lines_count:
             self._tmp_lines.append(line_data)
 
-        if len(self._tmp_lines) >= self._lines_len:
+        if len(self._tmp_lines) >= self.batch_lines_count:
             self.process(self._tmp_lines)
             self._tmp_lines = []
 

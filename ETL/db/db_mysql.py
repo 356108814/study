@@ -62,7 +62,7 @@ class DBMySQL(object):
                 result = cursor.fetchall()
         return result
 
-    @fun_cost_time
+    # @fun_cost_time
     def execute(self, sql, params_dict=None):
         """
         执行sql语句
