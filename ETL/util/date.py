@@ -155,3 +155,4 @@ if __name__ == '__main__':
     print(time.strftime('%Y-%m-%d %H:%M:%S', timeTuple))
     # print dateUtil.is_valid_date('2016-02-29')
     print(dateUtil.get_range_date_list('2015-02-24', '2016-03-02'))
+    print(dateUtil.timestamp2date(1472601600))

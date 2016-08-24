@@ -1,5 +1,6 @@
 # encoding: utf-8
 import re
+import json
 
 
 class ParserUtil(object):
@@ -55,9 +56,20 @@ class ParserUtil(object):
             print(data)
         return match.groupdict()
 
+    @staticmethod
+    def get_dict(data):
+        rtn = {}
+        if data:
+            try:
+                rtn = json.JSONDecoder().decode(data)
+            except Exception as e:
+                pass
+        return rtn
+
 
 if __name__ == '__main__':
     s = 'aimei_rsp_time=&a=1'
     parser = ParserUtil()
     a, b, c = ['a', 'b', 'c']
     print(b)
+    parser.get_dict('a')
