@@ -14,13 +14,14 @@ class LagouJobSpider(scrapy.Spider):
     allowed_domains = ["lagou.com"]
     start_urls = [
         "http://www.lagou.com/jobs/2257216.html",
-        # "http://www.lagou.com/jobs/list_python?labelWords=&fromSearch=true&suginput="
+        # "http://www.lagou.com/jobs/list_python?&px=default&city=%E5%85%A8%E5%9B%BD#filterBox"
     ]
 
     def parse(self, response):
-        filename = response.url.split("/")[-2] + '.html'
+        # filename = response.url.split("/")[-2] + '.html'
         # with open(filename, 'wb') as f:
         #     f.write(response.body)
+        # return
 
         job_detail = response.xpath('//dl[@class="job_detail"]')[0]
         title = job_detail.xpath('./dt/h1')[0].xpath('@title').extract_first()   # 获取属性

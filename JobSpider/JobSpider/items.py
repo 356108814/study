@@ -14,6 +14,6 @@ class JobItem(scrapy.Item):
     company = scrapy.Field()
     location = scrapy.Field()    # 地点
     salary = scrapy.Field()
-    description = scrapy.Field()
+    description = scrapy.Field()    # 职位描述
     requirement = scrapy.Field()    # 职位要求
 
