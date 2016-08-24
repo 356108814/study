@@ -8,9 +8,9 @@
 import scrapy
 
 
-class JobspiderItem(scrapy.Item):
+class JobItem(scrapy.Item):
     # define the fields for your item here like:
-    name = scrapy.Field()    # 职位名称
+    title = scrapy.Field()    # 职位名称
     company = scrapy.Field()
     location = scrapy.Field()    # 地点
     salary = scrapy.Field()

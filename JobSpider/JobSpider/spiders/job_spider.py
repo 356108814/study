@@ -6,7 +6,7 @@
 """
 
 import scrapy
-from ..items import JobspiderItem
+from ..items import JobItem
 
 
 class LagouJobSpider(scrapy.Spider):
@@ -22,11 +22,8 @@ class LagouJobSpider(scrapy.Spider):
         # with open(filename, 'wb') as f:
         #     f.write(response.body)
 
-        item = JobspiderItem()
         job_detail = response.xpath('//dl[@class="job_detail"]')[0]
-        print('='*100)
-        title = job_detail.xpath('./dt/h1')[0].xpath('@title').extract_first()   # get获取属性
-        print('title:%s' % title)
+        title = job_detail.xpath('./dt/h1')[0].xpath('@title').extract_first()   # 获取属性
         job_request = response.xpath('//dd[@class="job_request"]')[0]
         spans = job_request.xpath('./p')[0].xpath('./span')    # ./表示从当前节点开始查找
         salary = spans[0].xpath('./text()').extract_first()
@@ -48,9 +45,10 @@ class LagouJobSpider(scrapy.Spider):
                         requirements.append(text)
             else:
                 is_desc = False
-        print title
-        print salary
-        print location
-        print descs
-        print requirements
+
+        # 公司信息
+        job_company = response.xpath('//dl[@class="job_company"]')[0]
+        company = job_company.xpath('./dt/a/img[@class="b2"]/@alt').extract_first()
+        item = JobItem(title=title, company=company, location=location, salary=salary,
+                       description=descs, requirement=requirements)
         return item
