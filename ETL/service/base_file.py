@@ -23,7 +23,7 @@ class BaseFileService(FileConsumer):
         self.log = logger
 
         self._start_time = 0
-        self._check_time = 60    # 秒
+        self._check_time = 6    # 秒
         self._tmp_lines = []
         self.batch_lines_count = 10000    # 一次处理行数
 

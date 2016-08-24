@@ -8,8 +8,8 @@ import time
 
 import settings
 from util.date import DateUtil
-from util.socket import SocketUtil
 from ..base_file import BaseFileService
+from ..enums import Action
 from ..enums import Product
 from ..enums import Terminal
 
@@ -30,13 +30,10 @@ class UserActionService(BaseFileService):
         return False
 
     def get_clean_data(self, line_data):
-        # 去除日志前缀
-        index = line_data.find(']')
-        line_data = (line_data[index+1:]).strip()
         return line_data
 
     def process(self, lines):
-        # 格式：[I 160824 08:15:27 album_handler:99] {"action_time": 1471997727, "songid": 5485700, "uid": 1364881, "ip": "172.16.30.3", "action": 0, "aimei_object": "album", "source": "album_out", "albumid": 598008, "puid": 0}
+        # 格式：[I 160815 00:00:00 record_handler:181] timestamp=2016-08-15_00:00:00&action=click_listen_song&songid=2306797&uid=1277909
         if self._t_index == 0:
             self._t1 = time.time()
         column_values = []
@@ -58,17 +55,34 @@ class UserActionService(BaseFileService):
         :param line:
         :return:
         """
-        data = self.parser.get_dict(line)
+        index = line.find(']')
+        line = (line[index+1:]).strip()
+        data = self.parser.split_k_v(line)
         column_value = {
             'uid': data['uid'],
             'p_type': Product.MINIK.value,
             't_type': Terminal.Mobile.value,
-            'a_type': data['action'],
-            'action_time': data['action_time'],
-            'location': SocketUtil.ip2int(data['ip']),
-            'aimei_object': data['aimei_object'],
+            'a_type': -1,
+            'action_time': -1,
+            'location': -1,
+            'aimei_object': '',
             'update_time': -1
         }
+        action = data['action']
+        if action == 'click_listen_song':
+            column_value['a_type'] = Action.REQUEST_SONG.value
+            column_value['aimei_object'] = data['songid']
+        else:
+            column_value['a_type'] = Action.CLICK_BUTTON.value
+            aimei_object = ''
+            if action == 'click_tab':
+                aimei_object = data['tab']
+            elif action == 'visit_url':
+                aimei_object = data['url']
+            elif action == 'click_play_album':
+                aimei_object = data['albumid']
+            column_value['aimei_object'] = aimei_object
+        column_value['action_time'] = DateUtil.date2timestamp(data['timestamp'], fmt='%Y-%m-%d_%H:%M:%S')
 
         month = DateUtil.now('%Y%m')
         column_value['month'] = month
@@ -80,7 +94,7 @@ class UserActionService(BaseFileService):
         column_value['provinceid'] = -1
         column_value['isp'] = -1
         column_value['count'] = 1
-        column_value['time_span'] = DateUtil.timestamp2date(data['action_time'], '%d%H')
+        column_value['time_span'] = self.get_time_span(data['timestamp'])
         return column_value
 
     def insert_many(self, column_values):
@@ -109,3 +123,39 @@ class UserActionService(BaseFileService):
         sql = prefix + ', '.join(values) + end
         self.db.execute(sql)
 
+    def insert(self, column_value, data=None):
+        """
+        插入流水表
+        :param column_value:
+        """
+        # 设置默认值
+        month = DateUtil.now('%Y%m')
+        column_value['month'] = month
+        column_value['update_time'] = DateUtil.now('%Y-%m-%d %H:%M:%S')
+        sql = "INSERT INTO t_data_aimei_user_action_%(month)s (uid, p_type, t_type, a_type, action_time, location, aimei_object, update_time) VALUES (%(uid)s, '%(p_type)s', '%(t_type)s', '%(a_type)s', %(action_time)s, %(location)s, '%(aimei_object)s', '%(update_time)s')"
+        sql %= column_value    # 格式化
+        # self.db.execute(sql)
+        return sql, column_value
+
+    def insert_or_update_total(self, column_value, data=None):
+        """
+        插入或更新流水总表
+        :param column_value:
+        """
+        # 设置默认值
+        month = DateUtil.now('%Y%m')
+        column_value['month'] = month
+        column_value['provinceid'] = -1
+        column_value['isp'] = -1
+        column_value['count'] = 1
+        column_value['time_span'] = self.get_time_span(data['timestamp'])
+        column_value['update_time'] = DateUtil.now('%Y-%m-%d %H:%M:%S')
+        sql = "INSERT INTO t_data_aimei_user_action_mob_%(month)s (p_type, a_type, provinceid, isp, time_span, aimei_object, count, update_time) VALUES ('%(p_type)s', '%(a_type)s', %(provinceid)s, %(isp)s, %(time_span)s, '%(aimei_object)s', %(count)s, '%(update_time)s') ON DUPLICATE KEY UPDATE count = count + 1, update_time = '%(update_time)s'"
+        sql %= column_value    # 格式化
+        # self.db.execute(sql)
+        return sql, column_value
+
+    def get_time_span(self, date_str):
+        # 2016-08-15_23:59:59
+        time_span = date_str[8:10] + date_str[11:13]
+        return int(time_span)
