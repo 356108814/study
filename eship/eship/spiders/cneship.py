@@ -22,22 +22,29 @@ class CneshipSpider(scrapy.Spider):
 		code_t = tables[0]
 		code = code_t.xpath('./tbody/tr/td/span/text()').extract_first()
 		market = code_t.xpath('./tbody/tr/td[2]/text()').extract_first()
+		market = market.replace(u'市场：', '')
 
 		# 船信息
 		ship_t = tables[1]
 		name = ship_t.xpath('./tbody/tr[1]/td[1]/text()').extract_first()
+		name = name.replace(u'船名：', '')
 		category = ship_t.xpath('./tbody/tr[1]/td[2]/text()').extract_first()
-		name = ship_t.xpath('./tbody/tr[1]/td[1]/text()').extract_first()
-		category = ship_t.xpath('./tbody/tr[1]/td[2]/text()').extract_first()
-		
-		built_date = ship_t.xpath('./tbody/tr[2]/td[1]/text()').extract_first()
+		category = category.replace(u'船型：：', '')
+
+		built_date = ship_t.xpath('./tbody/tr[2]/td[1]/span/text()').extract_first()
 		factory = ship_t.xpath('./tbody/tr[2]/td[2]/text()').extract_first()
+		factory = factory.replace(u'建造船厂：', '')
 
 		location = ship_t.xpath('./tbody/tr[3]/td[1]/text()').extract_first()
+		location = location.replace(u'船籍港：', '')
+
 		length = ship_t.xpath('./tbody/tr[3]/td[2]/text()').extract_first()
 
 		width = ship_t.xpath('./tbody/tr[4]/td[1]/text()').extract_first()
 		height = ship_t.xpath('./tbody/tr[4]/td[2]/text()').extract_first()
+		length = length.replace(u'型长(米)：', '')
+		width = length.replace(u'型宽(米)：', '')
+		height = length.replace(u'型深(米)：', '')
 
 		weight = ship_t.xpath('./tbody/tr[5]/td[1]/span/text()').extract_first()
 		load_weight = ship_t.xpath('./tbody/tr[5]/td[2]/span/text()').extract_first()
@@ -47,18 +54,20 @@ class CneshipSpider(scrapy.Spider):
 
 		model_type = ship_t.xpath('./tbody/tr[7]/td[1]/text()').extract_first()
 
+		level = level.replace(u'船级：', '')
+		zone = zone.replace(u'航区：', '')
+		model_type = model_type.replace(u'主机型号：', '')
 
 		# 价格
 		price_t = tables[2]
 		price = price_t.xpath('./tbody/tr[2]/td[1]/span/text()').extract_first()
-
+		price = price.replace(u',', '').replace(u'元', '')
 
 		# 买卖
 		trade_t = tables[3]
 		seller = trade_t.xpath('./tbody/tr[1]/td[1]/text()').extract_first()
 		buyer = trade_t.xpath('./tbody/tr[2]/td[1]/text()').extract_first()
 		trade_desc = trade_t.xpath('./tbody/tr[3]/td[1]/text()').extract_first()
-
 
 
 		print('name:%s' % name)
