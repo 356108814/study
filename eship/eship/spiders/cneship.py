@@ -7,7 +7,7 @@ class CneshipSpider(scrapy.Spider):
     name = "cneship"
     allowed_domains = ["cn-eship.com"]
     start_urls = (
-        'http://www.cn-eship.com/public/PublicInfo.jsp?optid=1490',
+        'http://www.cn-eship.com/public/PublicInfo.jsp?optid=101',
     )
     
     def start_requests(self):
@@ -17,6 +17,9 @@ class CneshipSpider(scrapy.Spider):
     def parse(self, response):
 		print('='*100)
 		# print(response.body)
+		if response.body.find('信息不存在') != -1:
+		    return
+        
 		tables = response.xpath('//table')
 		# 编号、市场
 		code_t = tables[0]
