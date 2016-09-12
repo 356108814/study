@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>中华船舶交易网-公示信息</title>
+<link href="../resource/css/base.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+body {
+	background: #87B5C4 url(none);
+}
+.gs {
+	background: url(../resource/img/def/infoimggs.gif);
+	height: 50px;
+	margin-top: 30px;
+}
+.gsmc {
+	background: url(../resource/img/def/gsmctt.gif) no-repeat 0px 12px;
+	padding-left: 50px;
+}
+
+.gsmr {
+	background: url(../resource/img/def/gsmrtt.gif) no-repeat 0px 12px;
+	padding-left: 50px;
+}
+.gstt {
+	background: url(../resource/img/def/gstt.gif) no-repeat 0px 12px;
+	padding-left: 60px;
+}
+
+-->
+</style>
+<link href="../resource/css/info.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/formatStr.js"></script>
+</head>
+
+<body><center>
+<div class="infoour gs"></div>
+<div class="infoour infotext">
+  <table width="510" border="0" cellspacing="0" cellpadding="0" class="bh">
+    <tbody><tr>
+      <td width="257">编号：<span id="optid">00001490</span></td>
+      <td width="315">市场：湖南湘联船舶交易有限公司</td>
+    </tr>
+  </tbody></table>
+  <table width="510" border="0" cellspacing="0" cellpadding="0" class="listbase">
+    <tbody><tr>
+      <td width="50%">船名：三湘8号</td>
+      <td width="50%">船型：其它</td>
+    </tr>
+    <tr>
+      <td>建造日期：<span id="scd">2012-03</span></td>
+      <td>建造船厂：桃源县恒开船厂</td>
+    </tr>
+    <tr>
+      <td>船籍港：常德</td>
+      <td>型长(米)：73.8</td>
+    </tr>
+    <tr>
+      <td>型宽(米)：13.0</td>
+      <td>型深(米)：2.8</td>
+    </tr>
+    <tr>
+      <td>总吨：<span id="gt">1254.0</span></td>
+      <td>载重吨(吨)：<span id="dwt">1250.0</span></td>
+    </tr>
+    <tr>
+      <td>船级：ZC</td>
+      <td>航区：内河</td>
+    </tr>
+    <tr>
+      <td colspan="2">主机型号：WD615.C-23</td>
+      </tr>
+  </tbody></table>
+  <img src="../resource/img/def/dian.gif" width="520" height="1">
+  <table width="510" border="0" cellspacing="0" cellpadding="0" class="listbase">    
+    <tbody><tr>
+      <td width="50%">公示日期：<span id="publicdate">2016-09-07</span></td>
+      <td width="50%">公示期限(天)：7</td>
+    </tr>
+    
+    <tr>
+      <td>交易价格：<span id="price">2,000,000 元</span></td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody></table>
+  <table width="490" border="0" cellpadding="0" cellspacing="0" class="listbase">
+    
+	<tbody><tr>
+      <td valign="top" class="gsmc">覃佳泉</td>
+    </tr>
+    <tr>
+      <td valign="top" class="gsmr">童方桂</td>
+    </tr>
+	
+    <tr>
+      <td valign="top" class="gstt">自卸运砂船，带自动卸货设备&nbsp;</td>
+    </tr>
+  </tbody></table>
+</div>
+<div class="infoour infobott"></div>
+</center>
+<script type="text/javascript">
+function showPrice(price,bz){
+  var result,result1;
+  if (bz=='人民币'){
+    result=formatPrice(price);
+    //result=result.replace(/\B(?=([\d]{3})+$)/g, ',');
+    return result+' 元';
+  }else{
+    result=formatPrice(price);
+    return result+" "+bz;
+  }
+}
+  $getE('optid').innerHTML=formatIDNumber(1490,8);
+  $getE('scd').innerHTML=formatSCDDate('2012-03-13 00:00:00.0');
+  $getE('gt').innerHTML=formatDate('1254.0');
+  $getE('dwt').innerHTML=formatDate('1250.0');
+  $getE('publicdate').innerHTML=formatDate('2016-09-07 00:00:00.0');
+  $getE('price').innerHTML=showPrice(2000000.0,'人民币');
+  //$getE('price').innerHTML=showPrice(1234.67,'人民币');
+</script>
+
+
+</body></html>
