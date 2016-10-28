@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="hadoop-common-2.6.0-cdh5.8.0">
+    <CLASSES>
+      <root url="jar:///opt/dev-lib/hdfs/hadoop-common-2.6.0-cdh5.8.0.jar!/" />
+      <root url="jar:///opt/dev-lib/hdfs/hadoop-hdfs-2.6.0-cdh5.8.0.jar!/" />
+      <root url="jar:///opt/dev-lib/hdfs/hadoop-nfs-2.6.0-cdh5.8.0.jar!/" />
+      <root url="jar:///opt/dev-lib/hdfs/hadoop-yarn-client-2.6.0-cdh5.8.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

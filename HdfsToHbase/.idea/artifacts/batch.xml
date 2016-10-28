@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="batch">
+    <output-path>$PROJECT_DIR$/out/artifacts/batch</output-path>
+    <root id="archive" name="batch.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/target/classes" />
+    </root>
+  </artifact>
+</component>

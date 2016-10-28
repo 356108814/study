@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="hadoop-client-2.6.0-cdh5.8.0">
+    <CLASSES>
+      <root url="jar:///opt/dev-lib/hdfs/hadoop-client-2.6.0-cdh5.8.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="htrace-core-3.0.4">
+    <CLASSES>
+      <root url="jar:///opt/dev-lib/hdfs/htrace-core-3.0.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
