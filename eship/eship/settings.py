@@ -14,7 +14,7 @@ BOT_NAME = 'eship'
 SPIDER_MODULES = ['eship.spiders']
 NEWSPIDER_MODULE = 'eship.spiders'
 
-SPLASH_URL = 'http://192.168.0.109:8050'
+SPLASH_URL = 'http://192.168.0.111:8050'
 
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 
@@ -74,9 +74,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'eship.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'eship.pipelines.EshipPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

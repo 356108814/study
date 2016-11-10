@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy_splash import SplashRequest
+from items import EshipItem
 
 
 class CneshipSpider(scrapy.Spider):
@@ -92,10 +93,8 @@ class CneshipSpider(scrapy.Spider):
 		print('seller:%s' % seller)
 		print('buyer:%s' % buyer)
 		print('trade_desc:%s' % trade_desc)
-
-		# 船信息
-			
-		# print(tables)
-        #filename = response.url.split("/")[-2] + '.html'
-        #with open(filename, 'wb') as f:
-        #    f.write(response.body)
+        item = EshipItem()
+        item['name'] = name
+        item['code'] = code
+        item['market'] = market
+        return item
