@@ -9,6 +9,22 @@ import scrapy
 
 
 class EshipItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+    code = scrapy.Field()
+    market = scrapy.Field()
+    category = scrapy.Field()
+    built_date = scrapy.Field()
+    factory = scrapy.Field()
+    location = scrapy.Field()
+    length = scrapy.Field()
+    width = scrapy.Field()
+    height = scrapy.Field()
+    weight = scrapy.Field()
+    load_weight = scrapy.Field()
+    level = scrapy.Field()
+    zone = scrapy.Field()
+    model_type = scrapy.Field()
+    price = scrapy.Field()
+    seller = scrapy.Field()
+    buyer = scrapy.Field()
+    trade_desc = scrapy.Field()

@@ -4,6 +4,9 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import sqlite3
+
+from os import path
 
 
 class EshipPipeline(object):
@@ -20,5 +23,5 @@ class EshipPipeline(object):
         self.conn.close()
 
     def process_item(self, item, spider):
-        self.conn.execute('insert into ship values(?,?,?,?)',(None, item['name'], item['code'], item['market'])
+        self.conn.execute('insert into ship values(?,?,?,?)',(None, item['name'], item['code'], item['market']))
         return item
