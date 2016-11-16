@@ -7,9 +7,11 @@ from items import EshipItem
 class CneshipSpider(scrapy.Spider):
     name = "cneship"
     allowed_domains = ["cn-eship.com"]
-    start_urls = (
-        'http://www.cn-eship.com/public/PublicInfo.jsp?optid=101',
-    )
+
+    max_id = 1518
+    for x in xrange(max_id):
+        url = 'http://www.cn-eship.com/public/PublicInfo.jsp?optid=%s' % (x + 1)
+        start_urls.append(url)
     
     def start_requests(self):
         for url in self.start_urls:
