@@ -72,6 +72,7 @@ class CneshipSpider(scrapy.Spider):
         seller = trade_t.xpath('./tbody/tr[1]/td[1]/text()').extract_first()
         buyer = trade_t.xpath('./tbody/tr[2]/td[1]/text()').extract_first()
         trade_desc = trade_t.xpath('./tbody/tr[3]/td[1]/text()').extract_first()
+        url = response.url
 
         print('name:%s' % name)
         print('code:%s' % code)
@@ -112,6 +113,6 @@ class CneshipSpider(scrapy.Spider):
         item['seller'] = seller
         item['buyer'] = buyer
         item['trade_desc'] = trade_desc
-        
+        item['link'] = url
         return item
 

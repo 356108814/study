@@ -7,21 +7,30 @@
 import sqlite3
 
 from os import path
+from db import DBSqlite
 
 
 class EshipPipeline(object):
     def __init__(self):
         self.db_path = '/home/dream/github/study/eship/eship.db'
-        self.conn = sqlite3.connect(self.db_path)
+        self.db = DBSqlite(self.db_path)
     
     def open_spider(self, spider):
-        if not path.exists(self.db_path):
-            self.conn.execute("""create table ship(id integer primary key autoincrement, name text, code text, market text)""")
-        self.conn.commit()
+        pass
 
     def close_spider(self, spider):
-        self.conn.close()
+        self.db.close()
 
     def process_item(self, item, spider):
-        self.conn.execute('insert into ship values(?,?,?,?)',(None, item['name'], item['code'], item['market']))
+        columns = ', '.join(item.keys())
+        value_list = []
+        for column in columns:
+            value = item[column]
+            if column in ['length', 'width', 'height', 'weight', 'load_weight', 'price']:
+                value = value
+            else:
+                value = "'%s'" % value
+        values = ', '.join(value_list)
+        sql = 'insert into ship (%s) values(%s)' % (columns, values)
+        self.db.save(sql)
         return item

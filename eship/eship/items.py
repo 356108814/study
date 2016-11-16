@@ -28,3 +28,4 @@ class EshipItem(scrapy.Item):
     seller = scrapy.Field()
     buyer = scrapy.Field()
     trade_desc = scrapy.Field()
+    link = scrapy.Field()
