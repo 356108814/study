@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy_splash import SplashRequest
-from items import EshipItem
+from eship.items import EshipItem
 
 
 class CneshipSpider(scrapy.Spider):
     name = "cneship"
     allowed_domains = ["cn-eship.com"]
 
+    start_urls = []
     max_id = 1518
     for x in xrange(max_id):
         url = 'http://www.cn-eship.com/public/PublicInfo.jsp?optid=%s' % (x + 1)
@@ -35,7 +36,7 @@ class CneshipSpider(scrapy.Spider):
         name = ship_t.xpath('./tbody/tr[1]/td[1]/text()').extract_first()
         name = name.replace(u'船名：', '')
         category = ship_t.xpath('./tbody/tr[1]/td[2]/text()').extract_first()
-        category = category.replace(u'船型：：', '')
+        category = category.replace(u'船型：', '')
 
         built_date = ship_t.xpath('./tbody/tr[2]/td[1]/span/text()').extract_first()
         factory = ship_t.xpath('./tbody/tr[2]/td[2]/text()').extract_first()
@@ -49,8 +50,8 @@ class CneshipSpider(scrapy.Spider):
         width = ship_t.xpath('./tbody/tr[4]/td[1]/text()').extract_first()
         height = ship_t.xpath('./tbody/tr[4]/td[2]/text()').extract_first()
         length = length.replace(u'型长(米)：', '')
-        width = length.replace(u'型宽(米)：', '')
-        height = length.replace(u'型深(米)：', '')
+        width = width.replace(u'型宽(米)：', '')
+        height = height.replace(u'型深(米)：', '')
 
         weight = ship_t.xpath('./tbody/tr[5]/td[1]/span/text()').extract_first()
         load_weight = ship_t.xpath('./tbody/tr[5]/td[2]/span/text()').extract_first()

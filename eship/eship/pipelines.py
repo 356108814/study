@@ -12,7 +12,7 @@ from db import DBSqlite
 
 class EshipPipeline(object):
     def __init__(self):
-        self.db_path = '/home/dream/github/study/eship/eship.db'
+        self.db_path = '/home/dream/github/study/eship/eship/eship.db'
         self.db = DBSqlite(self.db_path)
     
     def open_spider(self, spider):
@@ -22,14 +22,16 @@ class EshipPipeline(object):
         self.db.close()
 
     def process_item(self, item, spider):
-        columns = ', '.join(item.keys())
+        keys = item.keys()
+        columns = ', '.join(keys)
         value_list = []
-        for column in columns:
+        for column in keys:
             value = item[column]
             if column in ['length', 'width', 'height', 'weight', 'load_weight', 'price']:
                 value = value
             else:
                 value = "'%s'" % value
+            value_list.append(value)
         values = ', '.join(value_list)
         sql = 'insert into ship (%s) values(%s)' % (columns, values)
         self.db.save(sql)

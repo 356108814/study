@@ -6,9 +6,8 @@
 """
 import os
 import sqlite3
-import setting
 
-SHOW_SQL = setting.DEBUG
+SHOW_SQL = True
 
 
 class DBSqlite(object):
@@ -81,15 +80,18 @@ class DBSqlite(object):
             data[index] = row[1]
         return data
 
-    def update(self, sql, data):
-        if sql and data:
-            for d in data:
-                if SHOW_SQL:
-                    print('执行sql:[{}],参数:[{}]'.format(sql, d))
-                self.cursor.execute(sql, d)
+    def execute(self, sql, data):
+        if sql:
+            if data:
+                for d in data:
+                    if SHOW_SQL:
+                        print('执行sql:[{}],参数:[{}]'.format(sql, d))
+                    self.cursor.execute(sql, d)
+            else:
+                self.cursor.execute(sql)
             self.conn.commit()
 
-    def delete(self, sql, data):
+    def delete(self, sql, data=None):
         if sql and data:
             for d in data:
                 if SHOW_SQL:
@@ -107,8 +109,9 @@ class DBSqlite(object):
             pass
 
 if __name__ == '__main__':
-    db = DBSqlite('J:\\meda\\data_aimei\\GodEye\\LogMerger\\since.db')
-    # print(db.desc_table('record'))
-    # print(db.fetchone('select * from record'))
-    print(db.fetchall('select * from record'))
+    db_path = '/home/dream/github/study/eship/eship/eship.db'
+    db = DBSqlite(db_path)
+    # db.execute('delete from ship', None)
+    ships = db.fetchall('select * from ship')
+    print(len(ships))
 
