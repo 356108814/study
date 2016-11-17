@@ -111,8 +111,8 @@ class DBSqlite(object):
 if __name__ == '__main__':
     db_path = '/home/dream/github/study/eship/eship/eship.db'
     db = DBSqlite(db_path)
-    # db.execute('delete from ship', None)
-    ships = db.fetchall("select * from ship where code = '00000121' ")
+    db.execute('delete from ship', None)
+    ships = db.fetchall("select * from ship")
     print(ships)
     for ship in ships:
         print(ship['name'])
