@@ -1,9 +1,11 @@
 package com.dream.example;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.ClusterMapReduceTestCase;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -60,8 +62,9 @@ public class WordCount {
             System.err.println("Usage: WordCount <input> <output>");
             System.exit(-1);
         }
-        String inputPath = args[0];
-        String outPath = args[1];
+        Path inputPath = new Path(args[0]);
+        Path outPath = new Path(args[1]);
+
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
         job.setJarByClass(WordCount.class);
@@ -70,10 +73,13 @@ public class WordCount {
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job, new Path(inputPath));
-        FileOutputFormat.setOutputPath(job, new Path(outPath));
+        FileInputFormat.addInputPath(job, inputPath);
+        FileOutputFormat.setOutputPath(job, outPath);
         // 判断outPath是否存在，如存在则先删除，否则报错
-        com.dream.util.FileUtil.deleteDirectory(outPath);
+        FileSystem fs = FileSystem.getLocal(conf);
+        if(fs.exists(outPath)) {
+            fs.delete(outPath, true);
+        }
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
