@@ -14,8 +14,9 @@ class CneshipSpider(scrapy.Spider):
     allowed_domains = ["cn-eship.com"]
 
     start_urls = []
+    start_id = 25814
     max_id = 30000
-    for x in xrange(max_id):
+    for x in xrange(start_id, max_id, 1):
         url = 'http://www.cn-eship.com/cj/cjinfo.jsp?dbid=%s' % (x + 1)
         start_urls.append(url)
 
