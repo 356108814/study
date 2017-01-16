@@ -14,7 +14,7 @@ BOT_NAME = 'eship'
 SPIDER_MODULES = ['eship.spiders']
 NEWSPIDER_MODULE = 'eship.spiders'
 
-SPLASH_URL = 'http://192.168.0.111:8050'
+SPLASH_URL = 'http://172.16.1.189:8050'
 
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 

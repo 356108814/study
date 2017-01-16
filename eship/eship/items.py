@@ -8,7 +8,7 @@
 import scrapy
 
 
-class EshipItem(scrapy.Item):
+class EshipPublicItem(scrapy.Item):
     name = scrapy.Field()
     code = scrapy.Field()
     market = scrapy.Field()
@@ -28,4 +28,31 @@ class EshipItem(scrapy.Item):
     seller = scrapy.Field()
     buyer = scrapy.Field()
     trade_desc = scrapy.Field()
+    link = scrapy.Field()
+
+
+class EshipCJItem(scrapy.Item):
+    """
+    成交信息，字段与网页对应id一致
+    """
+    dbid = scrapy.Field()    # 编号
+    pid = scrapy.Field()     # 鉴定机构
+    shipname = scrapy.Field()
+    shiptype = scrapy.Field()
+    scd = scrapy.Field()
+    scp = scrapy.Field()
+    sregp = scrapy.Field()
+    loa = scrapy.Field()
+    bm = scrapy.Field()
+    dm = scrapy.Field()
+    gt = scrapy.Field()
+    dwt = scrapy.Field()
+    sclass = scrapy.Field()
+    sr = scrapy.Field()
+    mt = scrapy.Field()
+    cdate = scrapy.Field()
+    adate = scrapy.Field()
+    price = scrapy.Field()
+    seller = scrapy.Field()
+    remark = scrapy.Field()
     link = scrapy.Field()
