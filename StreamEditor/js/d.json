@@ -1,0 +1,50 @@
+{
+  "title": "newFlow_1",
+  "nodes": {
+    "1496897340603": {
+      "name": "node_15",
+      "left": 117,
+      "top": 115,
+      "type": "start round mix",
+      "width": 26,
+      "height": 26,
+      "alt": true
+    },
+    "1496897355108": {
+      "name": "node_16",
+      "left": 269,
+      "top": 129,
+      "type": "chat",
+      "width": 104,
+      "height": 26,
+      "alt": true
+    },
+    "1496897357714": {
+      "name": "node_17",
+      "left": 502,
+      "top": 143,
+      "type": "end round",
+      "width": 26,
+      "height": 26,
+      "alt": true
+    }
+  },
+  "lines": {
+    "1496897360713": {
+      "type": "sl",
+      "from": "1496897340603",
+      "to": "1496897355108",
+      "name": "",
+      "alt": true
+    },
+    "1496897362107": {
+      "type": "sl",
+      "from": "1496897355108",
+      "to": "1496897357714",
+      "name": "",
+      "alt": true
+    }
+  },
+  "areas": {},
+  "initNum": 20
+}

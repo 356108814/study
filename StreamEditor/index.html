@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta http-equiv="library" content="easyui,internet,WdatePicker,zTree"/>-->
+    <meta http-equiv="library" content="easyui"/>
+    <title>流程图编辑器</title>
+
+    <link type="text/css" rel="stylesheet" href="css/index.css">
+
+    <!--依赖js-->
+    <script src='js/lib/jquery-2.2.4.min.js'></script>
+    <script src='../public/easyui/jquery.easyui.min.js'></script>
+    <script src='../public/easyui/easyui-lang-zh_CN.js'></script>
+    <script src='../public/core/EasyuiZX.js'></script>
+
+    <script src='js/lib/jquery-ui-1.11.4.min.js'></script>
+    <script src='js/lib/lodash-4.12.0.min.js'></script>
+    <!--<script src='js/lib/jsPlumb-2.0.7.js'></script>-->
+    <script src='js/lib/jsplumb.js'></script>
+    <!--<script src='https://jsplumbtoolkit.com/lib/jsplumb.js'></script>-->
+
+    <script src='js/lib/dagre.min.js'></script>
+    <script src='js/lib/jquery.panzoom.min.js'></script>
+    <script src='js/lib/template-web.js'></script>
+    <script src='js/DefaultData.js'></script>
+    <script src='js/StreamDiagramEditor.js'></script>
+    <script src='js/index.js'></script>
+</head>
+<body class="easyui-layout">
+
+<div data-options="region:'north'" style="height: 50px;" id="northRegion">顶部工具栏</div>
+<div data-options="region:'west',split:true" style="width:100px;" title="节点列表" id="westRegion">
+    <ul class="container-tpl">
+        <li class="tpl source-tpl" id="sourceTpl" type="source">数据源</li>
+        <li class="tpl transform-tpl" id="transformTpl" type="transform">转换</li>
+        <li class="tpl action-tpl" id="actionTpl" type="action">输出</li>
+    </ul>
+</div>
+<div data-options="region:'center'" title="编辑区">
+    <div class="easyui-layout container" data-options="fit:true">
+        <div class="panzoom">
+            <div data-options="region:'center'" class="diagram">
+                <!--<div id="i0" class="item">Root!</div>-->
+                <!--<div id="i1" class="item">Child 1</div>-->
+                <!--<div id="i11" class="item">Child 1.1</div>-->
+                <!--<div id="i12" class="item">Child 1.2</div>-->
+                <!--<div id="i2" class="item">Child 2</div>-->
+                <!--<div id="i21" class="item">Child 2.1</div>-->
+                <!--<div id="i3" class="item">Child 3</div>-->
+            </div>
+        </div>
+        <div data-options="region:'south',split:true" style="height:180px">
+            <iframe id="propertyIFrame" scrolling="no" frameborder="0" style="width:100%;height:100%;"></iframe>
+        </div>
+    </div>
+</div>
+<!--<div data-options="region:'east',split:true" style="width:100px">右侧</div>-->
+<!--<div data-options="region:'south'">底部</div>-->
+</div>
+
+</body>
+</html>
