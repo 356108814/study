@@ -7,7 +7,7 @@
 import sqlite3
 
 from os import path
-from db import DBSqlite
+from eship.db import DBSqlite
 
 
 class EshipPipeline(object):

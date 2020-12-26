@@ -16,7 +16,7 @@ class CneshipPublicSpider(scrapy.Spider):
 
     start_urls = []
     max_id = 30000
-    for x in xrange(max_id):
+    for x in range(max_id):
         url = 'http://www.cn-eship.com/public/PublicInfo.jsp?optid=%s' % (x + 1)
         start_urls.append(url)
     

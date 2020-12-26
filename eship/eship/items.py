@@ -37,16 +37,16 @@ class EshipCJItem(scrapy.Item):
     """
     dbid = scrapy.Field()    # 编号
     pid = scrapy.Field()     # 鉴定机构
-    shipname = scrapy.Field()
-    shiptype = scrapy.Field()
-    scd = scrapy.Field()
-    scp = scrapy.Field()
-    sregp = scrapy.Field()
-    loa = scrapy.Field()
+    shipname = scrapy.Field()    # 名称
+    shiptype = scrapy.Field()    # 类型
+    scd = scrapy.Field()    # 建造日期
+    scp = scrapy.Field()    # 造船厂
+    sregp = scrapy.Field()  # 地区
+    loa = scrapy.Field()    # 载重
     bm = scrapy.Field()
     dm = scrapy.Field()
     gt = scrapy.Field()
-    dwt = scrapy.Field()
+    dwt = scrapy.Field()    # 吨位
     sclass = scrapy.Field()
     sr = scrapy.Field()
     mt = scrapy.Field()
